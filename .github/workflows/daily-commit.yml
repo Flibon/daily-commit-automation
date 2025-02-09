@@ -17,7 +17,7 @@ jobs:
       - name: Make changes and commit
         run: |
           echo "Automated commit at $(date)" >> last_run.txt
-          git config --local user.name "GitHub Action Bot"
+          git config --local user.name "Flibon"
           git config --local user.email "manavsingh234567@gmail.com"
           git add last_run.txt
           git commit -m "Automated daily commit at $(date)" || true
