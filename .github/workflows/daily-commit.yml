@@ -2,7 +2,7 @@ name: Daily Commit Automation
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * *'  # Runs every day at midnight UTC
 
 jobs:
   daily-commit:
@@ -11,17 +11,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Fetch the full history to avoid conflicts
+          fetch-depth: 0  # Fetch the full history to avoid shallow clone issues
 
       - name: Pull the latest changes
         run: |
           git config --local user.name "GitHub Action Bot"
           git config --local user.email "21f3000756@ds.study.iitm.ac.in"
-          git pull origin main || true
+          git pull --rebase origin main || true
 
       - name: Make changes and commit
         run: |
           echo "Automated commit at $(date)" >> last_run.txt
           git add last_run.txt
           git commit -m "Automated daily commit at $(date)" || true
-          git push origin main
+
+      - name: Push changes back to repository
+        run: git push origin main
